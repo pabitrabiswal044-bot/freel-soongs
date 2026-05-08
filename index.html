@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Freel Soongs - Listen Free Music</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎵</span>
+                <h1>Freel <span>Soongs</span></h1>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#trending">Trending</a>
+                <a href="#categories">Categories</a>
+                <a href="#new">New Releases</a>
+                <a href="https://www.instagram.com/demon_god_2009/" target="_blank" class="insta-link">📷 Follow</a>
+            </div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to <span class="highlight">Freel Soongs</span></h1>
+            <p>Listen to unlimited free music. No signup. No payments. Just pure vibes.</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search for songs, artists, genres..." onkeyup="searchSongs()">
+                <button onclick="searchSongs()">🔍 Search</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num">1000+</span>
+                    <span class="stat-label">Free Songs</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">50+</span>
+                    <span class="stat-label">Artists</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">100%</span>
+                    <span class="stat-label">Free Forever</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Music Player (Fixed Bottom) -->
+    <div class="music-player" id="musicPlayer">
+        <div class="player-info">
+            <img id="currentArt" src="https://via.placeholder.com/60/1db954/ffffff?text=🎵" alt="Album Art">
+            <div class="song-details">
+                <h4 id="currentTitle">Select a Song</h4>
+                <p id="currentArtist">Click play to start listening</p>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button onclick="prevSong()" title="Previous">⏮</button>
+            <button onclick="togglePlay()" id="playBtn" title="Play/Pause">▶️</button>
+            <button onclick="nextSong()" title="Next">⏭</button>
+        </div>
+        <div class="player-progress">
+            <span id="currentTime">0:00</span>
+            <div class="progress-bar" onclick="setProgress(event)">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="totalTime">0:00</span>
+        </div>
+        <div class="player-volume">
+            <span>🔊</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.7" onchange="setVolume(this.value)">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Trending Songs Section -->
+        <section id="trending" class="section">
+            <div class="section-header">
+                <h2>🔥 Trending Now</h2>
+                <div class="section-nav">
+                    <button class="scroll-btn" onclick="scrollSlider('trendingSlider', -1)">‹</button>
+                    <button class="scroll-btn" onclick="scrollSlider('trendingSlider', 1)">›</button>
+                </div>
+            </div>
+            <div class="song-slider" id="trendingSlider"></div>
+        </section>
+
+        <!-- New Releases -->
+        <section id="new" class="section">
+            <div class="section-header">
+                <h2>🆕 New Releases</h2>
+            </div>
+            <div class="song-slider" id="newReleasesSlider"></div>
+        </section>
+
+        <!-- Categories -->
+        <section id="categories" class="section">
+            <div class="section-header">
+                <h2>📂 Browse Categories</h2>
+            </div>
+            <div class="categories-grid" id="categoriesGrid">
+                <div class="category-card" onclick="filterByGenre('pop')">
+                    <span class="cat-icon">🎤</span>
+                    <h3>Pop</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('rock')">
+                    <span class="cat-icon">🎸</span>
+                    <h3>Rock</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('hip-hop')">
+                    <span class="cat-icon">🎧</span>
+                    <h3>Hip Hop</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('electronic')">
+                    <span class="cat-icon">🎹</span>
+                    <h3>Electronic</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('r&b')">
+                    <span class="cat-icon">🎙️</span>
+                    <h3>R&B</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('jazz')">
+                    <span class="cat-icon">🎷</span>
+                    <h3>Jazz</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('lofi')">
+                    <span class="cat-icon">☕</span>
+                    <h3>Lo-Fi</h3>
+                </div>
+                <div class="category-card" onclick="filterByGenre('indie')">
+                    <span class="cat-icon">🎸</span>
+                    <h3>Indie</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Songs Section -->
+        <section id="all-songs" class="section">
+            <div class="section-header">
+                <h2>📀 All Songs</h2>
+                <div class="filter-options">
+                    <select id="genreFilter" onchange="filterSongs()">
+                        <option value="all">All Genres</option>
+                        <option value="pop">Pop</option>
+                        <option value="rock">Rock</option>
+                        <option value="hip-hop">Hip Hop</option>
+                        <option value="electronic">Electronic</option>
+                        <option value="r&b">R&B</option>
+                        <option value="jazz">Jazz</option>
+                        <option value="lofi">Lo-Fi</option>
+                        <option value="indie">Indie</option>
+                    </select>
+                    <select id="sortFilter" onchange="filterSongs()">
+                        <option value="default">Default</option>
+                        <option value="az">A-Z</option>
+                        <option value="za">Z-A</option>
+                    </select>
+                </div>
+            </div>
+            <div class="songs-list" id="songsList"></div>
+        </section>
+    </main>
+
+    <!-- Instagram Follow Banner -->
+    <section class="insta-banner">
+        <div class="insta-content">
+            <span class="insta-icon">📷</span>
+            <h3>Follow us on Instagram!</h3>
+            <p>Stay updated with new songs, exclusive content & more</p>
+            <a href="https://www.instagram.com/demon_god_2009/" target="_blank" class="insta-btn">@demon_god_2009</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>🎵 Freel Soongs</h3>
+                <p>Free music for everyone. No subscriptions, no payments, just pure music vibes.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/demon_god_2009/" target="_blank">📷 Instagram</a>
+                    <a href="#">🐦 Twitter</a>
+                    <a href="#">▶️ YouTube</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="#">Home</a>
+                <a href="#trending">Trending</a>
+                <a href="#categories">Categories</a>
+                <a href="#all-songs">All Songs</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">DMCA</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Freel Soongs | Made with ❤️ | Follow <a href="https://www.instagram.com/demon_god_2009/" target="_blank">@demon_god_2009</a> on Instagram</p>
+        </div>
+    </footer>
+
+    <!-- Hidden Audio Element -->
+    <audio id="audioPlayer"></audio>
+
+    <script src="songs.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
